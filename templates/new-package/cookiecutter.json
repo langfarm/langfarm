@@ -1,0 +1,8 @@
+{
+    "package_name": "my-project",
+    "version": "0.1.0",
+    "description": "My package description",
+    "project_type": ["apps", "packages"],
+    "__final_destination": "../{{ cookiecutter.project_type }}/{{cookiecutter.package_name}}/",
+    "__project_slug": "{{ cookiecutter.package_name.replace(' ', '_').replace('-', '_') }}"
+}

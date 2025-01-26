@@ -13,10 +13,23 @@ dev = [
     "poethepoet>=0.32.0",
     "pytest >= 8.3.4",
     "ruff >= 0.8.5",
+    "cookiecutter>=2.6.0",
 ]
 
 [tool.uv.workspace]
 members = ["packages/*", "apps/*"]
+
+[tool.ruff]
+line-length = 120
+fix = true
+target-version = "py311"
+extend-exclude = ["templates"]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.pyright]
+include = ["src", "tests"]
 
 [tool.poe.tasks]
 # run with eg `uv run poe fmt`
@@ -29,5 +42,3 @@ all = ["fmt", "lint", "pyright", "test"]
 
 "ci:fmt" = "ruff format --check ${PWD}"  # fail if not formatted
 "ci:lint" = "ruff check ${PWD}"
-
-# server
