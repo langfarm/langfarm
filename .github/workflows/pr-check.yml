@@ -1,0 +1,42 @@
+name: Pull Request Check
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+
+jobs:
+  pr-check:
+    name: Pull Request Check
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install the project
+        run: uv sync --all-packages
+
+      - name: Check Formatting the project
+        run: uv run poe ci:fmt
+
+      - name: Lint the project
+        run: uv run poe ci:lint
+
+      - name: Pyright check th project
+        run: uv run poe pyright
+
+      - name: Run tests
+        # For example, using `pytest`
+        run: uv run poe test
