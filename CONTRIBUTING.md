@@ -2,16 +2,18 @@
 
 该项目欢迎世界各地的开发者和组织的贡献。我们的目标是培育一个协作和包容的社区，在这里，不同的观点和专业知识可以推动创新并增强项目的能力。无论您是个人贡献者还是代表组织，我们邀请您加入我们，共同塑造该项目的未来。可能的贡献包括但不限于：
 
-* Pushing patches.
-* Pushing patches.
-* Code review of pull requests.
-* Documentation, examples and test cases.
-* Readability improvement, e.g., improvement on docstr and comments.
-* Community participation in [issues](https://github.com/langfarm/langfarm/issues), [discussions](https://github.com/langfarm/langfarm/discussions).
-* Tutorials, blog posts, talks that promote the project.
-* Sharing application scenarios and/or related research.
+* [Fork][fork] 和 clone 仓库.
+* 配置和安装依赖：`uv sync --all-packages`
+* 本机运行单元测试：`uv run poe test`
+* 创建新分支: `git checkout -b feature/xxx`。
+* 完善文档、实现 新功能、修复 bug。运行检查和测试 `uv run poe all`。
+* 推进 变更到你的仓库 和 [创建 pull request][pr]
+* 为自己击掌，等待你的pull请求被审查和合并。
 
-如果您是 GitHub 新手，[这里 English](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests) / [中文](https://docs.github.com/zh/pull-requests/collaborating-with-pull-requests) 有关于参与 GitHub 开发的详细帮助资源。
+注意：
+* 实现功能或修改bug之前，先在 [pull request 列表][pulls]查看是否有存在的 pull request。
+* 不要用 main 分支直接修改代码和创建 pull request。使用 feature/xxx 或 bug/yyy 或 docs/zzz 分支
+* 代码提交请求遵循 [提交规范](#commit-规范)。
 
 ## 版本号
 
@@ -40,3 +42,9 @@
   * perf: 用于优化性能，例如提升代码的性能、减少内存占用等；
   * test: 用于修改测试用例，例如添加、删除、修改代码的测试用例等。
 * 脚注中除了 ```BREAKING CHANGE: <description>``` ，其它条目应该采用类似 git trailer format 这样的惯例。
+
+## 资源
+
+- [如何为开源做贡献](https://opensource.guide/zh-hans/how-to-contribute/)
+- [关于拉取请求](https://docs.github.com/zh/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
+- [GitHub 帮助](https://help.github.com)
