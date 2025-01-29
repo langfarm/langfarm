@@ -2,16 +2,16 @@
 
 该项目欢迎世界各地的开发者和组织的贡献。我们的目标是培育一个协作和包容的社区，在这里，不同的观点和专业知识可以推动创新并增强项目的能力。无论您是个人贡献者还是代表组织，我们邀请您加入我们，共同塑造该项目的未来。可能的贡献包括但不限于：
 
-* [Fork][fork] 和 clone 仓库.
+* [Fork](https://github.com/langfarm/langfarm/fork) 和 clone 仓库.
 * 配置和安装依赖：`uv sync --all-packages`
 * 本机运行单元测试：`uv run poe test`
 * 创建新分支: `git checkout -b feature/xxx`。
 * 完善文档、实现 新功能、修复 bug。运行检查和测试 `uv run poe all`。
-* 推进 变更到你的仓库 和 [创建 pull request][pr]
+* 推进 变更到你的仓库 和 创建 pull request
 * 为自己击掌，等待你的pull请求被审查和合并。
 
 注意：
-* 实现功能或修改bug之前，先在 [pull request 列表][pulls]查看是否有存在的 pull request。
+* 实现功能或修改bug之前，先在 [pull request 列表](https://github.com/langfarm/langfarm/pulls)查看是否有存在的 pull request。
 * 不要用 main 分支直接修改代码和创建 pull request。使用 feature/xxx 或 bug/yyy 或 docs/zzz 分支
 * 代码提交请求遵循 [提交规范](#commit-规范)。
 
