@@ -3,7 +3,7 @@ from abc import abstractmethod
 from typing import final
 
 import sqlalchemy
-from sqlalchemy.engine.base import Connection, Engine
+from sqlalchemy.engine.base import Engine
 from testcontainers.core.container import DockerContainer
 from testcontainers.postgres import PostgresContainer
 
@@ -62,12 +62,3 @@ class BasePostgresContainerTestCase(BaseContainerTestCase):
         postgres_container = PostgresContainer("postgres:latest", driver="psycopg")
         cls.postgres_container = postgres_container
         return postgres_container
-
-    def setUp(self):
-        self.connection: Connection = self.db_engine.connect()
-        logger.info("Connected to postgres [%s]", self.postgres_container.get_connection_url())
-
-    def tearDown(self):
-        if self.connection:
-            self.connection.close()
-            logger.info("Disconnected from postgres [%s]", self.postgres_container.get_connection_url())
