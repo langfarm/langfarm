@@ -12,6 +12,7 @@ dev = [
     "pyright >= 1.1.392",
     "poethepoet>=0.32.0",
     "pytest >= 8.3.4",
+    "pytest-cov>=6.0.0",
     "ruff >= 0.8.5",
     "cookiecutter>=2.6.0",
     "testcontainers>=4.9.1",
@@ -35,6 +36,16 @@ docstring-code-format = true
 
 [tool.pyright]
 include = ["src", "tests"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=packages --cov=apps --cov-report=html"
+minversion = "6.0"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+omit = [
+    "*/tests/**/*.py"
+]
 
 [tool.poe.tasks]
 # run with eg `uv run poe fmt`

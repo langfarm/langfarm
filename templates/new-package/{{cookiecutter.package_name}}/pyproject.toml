@@ -28,5 +28,6 @@ extends = "../../pyproject.toml"
 include = ["src", "tests"]
 
 [tool.pytest.ini_options]
+addopts = "--cov=src --cov-report=html"
 minversion = "6.0"
 testpaths = ["tests"]
