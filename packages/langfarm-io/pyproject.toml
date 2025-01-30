@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "langfarm-io"
+version = "0.1.0"
+description = "Langfarm IO"
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "cachetools>=5.5.1",
+    "psycopg[binary]>=3.2.4",
+    "pydantic>=2.10.6",
+    # "langfarm-xxx"
+    "sqlalchemy>=2.0.37",
+]
+
+[dependency-groups]
+dev = []
+
+[tool.uv.sources]
+# langfarm-xxx = { workspace = true }
+
+[tool.ruff]
+extend = "../../pyproject.toml"
+include = ["src/**", "tests/*.py"]
+
+[tool.pyright]
+extends = "../../pyproject.toml"
+include = ["src", "tests"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
