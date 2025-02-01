@@ -39,3 +39,9 @@ config_log_for_test()
 
 def get_test_logger(name: str):
     return logging.getLogger(name)
+
+
+def get_package_base_dir(test_file: str) -> str:
+    idx = test_file.rfind("/tests/")
+    package_base_dir = test_file[:idx] if idx > 0 else test_file
+    return package_base_dir

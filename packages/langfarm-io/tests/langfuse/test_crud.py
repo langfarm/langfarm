@@ -6,7 +6,6 @@ import sqlalchemy
 from langfarm_io.langfuse import crud
 from langfarm_io.langfuse.crud import get_api_key_by_cache, find_model, find_model_by_cache
 from langfarm_io.langfuse.local_cache import get_cache_info
-from langfarm_tests.base_container import BasePostgresContainerTestCase
 from langfarm_tests.base_for_test import get_test_logger
 
 from sqlalchemy import select
@@ -16,40 +15,16 @@ from sqlalchemy.schema import CreateTable
 from langfarm_io.langfuse import auth, db_reader
 from langfarm_io.langfuse.schema import ApiKey
 from env_config import LangfuseEnv
+from langfarm_tests.langfuse_container import LangfuseDBContainerTestCase
 
 logger = get_test_logger(__name__)
 
 
-class UseLangfuseDBTestCase(BasePostgresContainerTestCase):
+class UseLangfuseDBTestCase(LangfuseDBContainerTestCase):
     @classmethod
     def _set_up_class_other(cls):
         super()._set_up_class_other()
         db_reader.engine = cls.db_engine
-        # init langfuse db
-        # load sql file
-        base_dir = __file__[: -len(f"/{__name__}.py")]
-        sql_file_names = [
-            "users.sql",
-            "organizations.sql",
-            "projects.sql",
-            "api_keys.sql",
-            "models.sql",
-            "init_data.sql",
-        ]
-        sql_file_paths = []
-        sql_texts: list[str] = []
-        for sql_file in sql_file_names:
-            sql_file_path = f"{base_dir}/init_db/{sql_file}"
-            sql_file_paths.append(sql_file_path)
-            with open(sql_file_path, "r") as file:
-                sql_texts.append(file.read())
-
-        # execute sql for init
-        with cls.db_engine.begin() as conn:
-            for idx in range(len(sql_file_paths)):
-                logger.info("import sql in file=[%s]", sql_file_paths[idx])
-                result = conn.execute(sqlalchemy.text(sql_texts[idx]))
-                logger.info("db exc result:%s", repr(result))
 
     def test_show_create_api_key_sql(self):
         ct = CreateTable(ApiKey.__table__)  # pyright: ignore
