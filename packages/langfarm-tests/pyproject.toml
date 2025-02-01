@@ -24,13 +24,13 @@ dev = [
 
 [tool.ruff]
 extend = "../../pyproject.toml"
-include = ["src/**", "tests/*.py"]
+include = ["src/**/*.py", "tests/**/*.py"]
 
 [tool.pyright]
 extends = "../../pyproject.toml"
 include = ["src", "tests"]
 
 [tool.pytest.ini_options]
-addopts = "--cov=src --cov-report=html"
+#addopts = "--cov=src --cov-report=html"
 minversion = "6.0"
 testpaths = ["tests"]

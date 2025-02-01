@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Langfarm 是 LLM 应用的 Ops 平台。使用 Langfuse 及对其改进等..."
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "langfarm-io",
+]
 
 
 [dependency-groups]
@@ -24,6 +26,7 @@ members = ["packages/*", "apps/*"]
 
 [tool.uv.sources]
 langfarm-tests = { workspace = true }
+langfarm-io = { workspace = true }
 
 [tool.ruff]
 line-length = 120
