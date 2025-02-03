@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "langfarm-app-base"
+version = "0.1.0"
+description = "Langfarm App Base"
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    # bcrypt 不能其它版本
+    # Pin bcrypt until passlib supports the latest
+    # https://github.com/pyca/bcrypt/issues/684#issuecomment-1836872510
+    "bcrypt==4.0.1",
+    "fastapi>=0.115.7",
+    "passlib[bcrypt]>=1.7.4",
+    "pydantic-settings>=2.7.1",
+    "uvicorn[standard]>=0.34.0",
+    # "langfarm-xxx",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+]
+
+[tool.uv.sources]
+#langfarm-xxx = { workspace = true }
+
+[tool.ruff]
+extend = "../../pyproject.toml"
+include = ["src/**/*.py", "tests/**/*.py"]
+
+[tool.pyright]
+extends = "../../pyproject.toml"
+include = ["src", "tests"]
+
+[tool.pytest.ini_options]
+#addopts = "--cov=src --cov-report=html"
+minversion = "6.0"
+testpaths = ["tests"]
