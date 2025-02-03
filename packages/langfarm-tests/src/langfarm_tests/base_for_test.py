@@ -3,7 +3,7 @@ import os.path
 
 import yaml
 
-base_dir = __file__[: -len("/packages/langfarm-tests/src/langfarm_tests/base_for_test.py")]
+root_dir = __file__[: -len("/packages/langfarm-tests/src/langfarm_tests/base_for_test.py")]
 
 
 def config_log(log_file: str):
@@ -11,11 +11,11 @@ def config_log(log_file: str):
     with open(log_file) as f:
         log_config = yaml.full_load(f)
         out_log_file = log_config["handlers"]["file_handler"]["filename"]
-        log_dir = f"{base_dir}/logs"
+        log_dir = f"{root_dir}/logs"
         if not os.path.exists(log_dir):
             print("创建日志目录：", log_dir)
             os.makedirs(log_dir, exist_ok=True)
-        log_config["handlers"]["file_handler"]["filename"] = f"{base_dir}/{out_log_file}"
+        log_config["handlers"]["file_handler"]["filename"] = f"{root_dir}/{out_log_file}"
         logging.config.dictConfig(log_config)
 
 
@@ -26,7 +26,7 @@ def config_log_for_test():
     # 打印空行
     print()
 
-    log_file = f"{base_dir}/tests/logging.yaml"
+    log_file = f"{root_dir}/tests/logging.yaml"
     print("配置 log_file = ", log_file)
 
     config_log(log_file)
@@ -45,3 +45,15 @@ def get_package_base_dir(test_file: str) -> str:
     idx = test_file.rfind("/tests/")
     package_base_dir = test_file[:idx] if idx > 0 else test_file
     return package_base_dir
+
+
+def find_env_file(test_file: str, suffix: str = ".test") -> list[str]:
+    """
+    找 .env{suffix} 配置文件
+    :param test_file: 当前的测试文件名，一般用 __file__
+    :param suffix: 默认值为 .test 。为拼接为 .env.test
+    :return: 顶层项目的 tests 目录 和当前项目的 tests 目录 中找 .env{suffix} 的文件
+    """
+    package_base_dir = get_package_base_dir(test_file)
+    env_file_list = [f"{root_dir}/tests/.env{suffix}", f"{package_base_dir}/tests/.env{suffix}"]
+    return env_file_list
