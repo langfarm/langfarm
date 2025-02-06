@@ -22,6 +22,7 @@ class LangfuseDBContainerTestCase(BasePostgresContainerTestCase):
         sql_file_names = [
             "users.sql",
             "organizations.sql",
+            "organization_memberships.sql",
             "projects.sql",
             "api_keys.sql",
             "models.sql",
