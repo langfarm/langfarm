@@ -14,7 +14,7 @@ from sqlalchemy.schema import CreateTable
 
 from langfarm_io.langfuse import auth, db_reader
 from langfarm_io.langfuse.schema import ApiKey
-from env_config import LangfuseEnv
+from langfarm_tests.env_config import LangfuseEnv
 from langfarm_tests.langfuse_container import LangfuseDBContainerTestCase
 
 logger = get_test_logger(__name__)
