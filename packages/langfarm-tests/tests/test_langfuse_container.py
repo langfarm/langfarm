@@ -13,6 +13,7 @@ class InitLangfuseDBTestCase(LangfuseDBContainerTestCase):
         table_id_map = {
             "users": "cm6g082zk000013r2t86dhtib",
             "organizations": "cm6g0t2nu000113r2msztoha4",
+            "organization_memberships": "cm6ok6abq0005x2j8vd9xlx4d",
             "projects": "cm6g0uptx000613r2ha6hxtkc",
             "api_keys": "cm6g0uzgj000913r25shr4z98",
         }

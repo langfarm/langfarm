@@ -7,6 +7,10 @@ insert into users(id, name, email, password) values (
 
 insert into organizations(id, name) values ('cm6g0t2nu000113r2msztoha4', 'langfarm');
 
+insert into organization_memberships(id, org_id, user_id, role) values (
+    'cm6ok6abq0005x2j8vd9xlx4d', 'cm6g0t2nu000113r2msztoha4', 'cm6g082zk000013r2t86dhtib', 'OWNER'
+);
+
 insert into projects(id, name, org_id) values ('cm6g0uptx000613r2ha6hxtkc', 'llm-demo', 'cm6g0t2nu000113r2msztoha4');
 
 -- LANGFUSE_SECRET_KEY=sk-lf-f69c6951-3462-4997-ba22-1c598e8308aa
