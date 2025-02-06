@@ -4,7 +4,7 @@ from langfarm_app_base import config
 
 logger = get_test_logger(__name__)
 
-settings = config.settings = config.Settings(
+settings = config.settings = config.AppSettings(
     _env_file=find_env_file(__file__)  # type: ignore
 )
 
