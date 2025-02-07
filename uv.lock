@@ -7,6 +7,7 @@ members = [
     "langfarm-app-base",
     "langfarm-io",
     "langfarm-tests",
+    "langfarm-tracing",
 ]
 
 [[package]]
@@ -417,6 +418,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "langfarm-app-base" },
     { name = "langfarm-io" },
+    { name = "langfarm-tracing" },
 ]
 
 [package.dev-dependencies]
@@ -435,6 +437,7 @@ dev = [
 requires-dist = [
     { name = "langfarm-app-base", editable = "packages/langfarm-app-base" },
     { name = "langfarm-io", editable = "packages/langfarm-io" },
+    { name = "langfarm-tracing", editable = "apps/langfarm-tracing" },
 ]
 
 [package.metadata.requires-dev]
@@ -518,6 +521,34 @@ dev = [
     { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "sqlalchemy", specifier = ">=2.0.37" },
 ]
+
+[[package]]
+name = "langfarm-tracing"
+version = "0.1.0"
+source = { editable = "apps/langfarm-tracing" }
+dependencies = [
+    { name = "bcrypt" },
+    { name = "fastapi" },
+    { name = "langfarm-app-base" },
+    { name = "langfarm-io" },
+    { name = "passlib", extra = ["bcrypt"] },
+    { name = "pydantic-settings" },
+    { name = "uvicorn", extra = ["standard"] },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "bcrypt", specifier = "==4.0.1" },
+    { name = "fastapi", specifier = ">=0.115.7" },
+    { name = "langfarm-app-base", editable = "packages/langfarm-app-base" },
+    { name = "langfarm-io", editable = "packages/langfarm-io" },
+    { name = "passlib", extras = ["bcrypt"], specifier = ">=1.7.4" },
+    { name = "pydantic-settings", specifier = ">=2.7.1" },
+    { name = "uvicorn", extras = ["standard"], specifier = ">=0.34.0" },
+]
+
+[package.metadata.requires-dev]
+dev = []
 
 [[package]]
 name = "markdown-it-py"
