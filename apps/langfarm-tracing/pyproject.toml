@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "langfarm-tracing"
+version = "0.1.0"
+description = "Langfarm Tracing"
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "langfarm-app-base",
+    # "langfarm-xxx"
+    "langfarm-io",
+]
+
+[dependency-groups]
+dev = []
+
+[tool.uv.sources]
+langfarm-io = { workspace = true }
+langfarm-app-base = { workspace = true }
+#langfarm-xxx = { workspace = true }
+
+[tool.ruff]
+extend = "../../pyproject.toml"
+include = ["src/**", "tests/*.py"]
+
+[tool.pyright]
+extends = "../../pyproject.toml"
+include = ["src", "tests"]
+
+[tool.pytest.ini_options]
+#addopts = "--cov=src --cov-report=html"
+minversion = "6.0"
+testpaths = ["tests"]

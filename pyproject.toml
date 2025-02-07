@@ -7,6 +7,7 @@ requires-python = ">=3.11"
 dependencies = [
     "langfarm-app-base",
     "langfarm-io",
+    "langfarm-tracing",
 ]
 
 
@@ -29,6 +30,7 @@ members = ["packages/*", "apps/*"]
 langfarm-tests = { workspace = true }
 langfarm-io = { workspace = true }
 langfarm-app-base = { workspace = true }
+langfarm-tracing = { workspace = true }
 
 [tool.ruff]
 line-length = 120
