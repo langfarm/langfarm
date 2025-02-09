@@ -15,3 +15,13 @@ def test_tracing_config():
     assert settings.DOMAIN == "tracing.local.com"
     assert settings.SALT == "mysalt"
     assert settings.POSTGRES_USER == "test"
+
+    # postgres
+    assert settings.POSTGRES_SERVER == "localhost"
+    assert settings.POSTGRES_PORT == 5432
+    assert settings.POSTGRES_DB == "test"
+    assert settings.POSTGRES_USER == "test"
+    assert settings.POSTGRES_PASSWORD == "test"
+
+    # redis
+    assert settings.REDIS_BODY_ID_EXPIRE_SECONDS == 600
