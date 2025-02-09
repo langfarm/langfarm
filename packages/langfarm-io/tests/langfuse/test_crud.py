@@ -73,7 +73,7 @@ class UseLangfuseDBTestCase(LangfuseDBContainerTestCase):
 
     def test_get_api_key_by_cache(self):
         env = LangfuseEnv()
-        cache_info = get_cache_info(get_api_key_by_cache)
+        cache_info = get_cache_info(get_api_key_by_cache, clear_cache=True)
         assert cache_info
         assert cache_info.currsize == 0
         assert cache_info.hits == 0
@@ -109,7 +109,7 @@ class UseLangfuseDBTestCase(LangfuseDBContainerTestCase):
 
     def test_find_model_by_cache(self):
         env = LangfuseEnv()
-        cache_info = get_cache_info(find_model_by_cache)
+        cache_info = get_cache_info(find_model_by_cache, clear_cache=True)
         assert cache_info
         assert cache_info.currsize == 0
         assert cache_info.hits == 0
