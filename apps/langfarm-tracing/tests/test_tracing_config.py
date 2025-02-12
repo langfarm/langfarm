@@ -25,3 +25,6 @@ def test_tracing_config():
 
     # redis
     assert settings.REDIS_BODY_ID_EXPIRE_SECONDS == 600
+
+    # kafka
+    assert settings.KAFKA_BOOTSTRAP_SERVERS == "localhost:9092"
