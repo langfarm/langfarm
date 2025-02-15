@@ -2,19 +2,16 @@ import unittest
 from decimal import Decimal
 
 import sqlalchemy
-
-from langfarm_io.langfuse import crud
-from langfarm_io.langfuse.crud import get_api_key_by_cache, find_model, find_model_by_cache
-from langfarm_io.langfuse.local_cache import get_cache_info
 from langfarm_tests.base_for_test import get_test_logger
-
+from langfarm_tests.env_config import LangfuseEnv
 from sqlalchemy import select
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.schema import CreateTable
 
-from langfarm_io.langfuse import auth, db_reader
+from langfarm_io.langfuse import auth, crud, db_reader
+from langfarm_io.langfuse.crud import find_model, find_model_by_cache, get_api_key_by_cache
+from langfarm_io.langfuse.local_cache import get_cache_info
 from langfarm_io.langfuse.schema import ApiKey
-from langfarm_tests.env_config import LangfuseEnv
 from langfarm_tests.langfuse_container import LangfuseDBContainerTestCase
 
 logger = get_test_logger(__name__)
@@ -22,9 +19,8 @@ logger = get_test_logger(__name__)
 
 class UseLangfuseDBTestCase(LangfuseDBContainerTestCase):
     @classmethod
-    def _set_up_class_other(cls):
-        super()._set_up_class_other()
-        db_reader.engine = cls.db_engine
+    def after_docker_compose_started(cls):
+        db_reader.engine = cls.get_db_engine()
 
     def test_show_create_api_key_sql(self):
         ct = CreateTable(ApiKey.__table__)  # pyright: ignore
@@ -33,7 +29,7 @@ class UseLangfuseDBTestCase(LangfuseDBContainerTestCase):
         assert str(sql).find("WITHOUT TIME ZONE") > 0
 
     def test_postgresql_connection(self):
-        with self.db_engine.connect() as conn:
+        with self.get_db_engine().connect() as conn:
             result = conn.execute(sqlalchemy.text("select version()"))
             if result:
                 row = result.fetchone()
