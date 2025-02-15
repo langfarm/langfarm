@@ -25,9 +25,8 @@ class LangfuseIngestionTestCase(LangfuseDBContainerTestCase):
     client: TestClient
 
     @classmethod
-    def _set_up_class_other(cls):
-        super()._set_up_class_other()
-        db_reader.engine = cls.db_engine
+    def after_docker_compose_started(cls):
+        db_reader.engine = cls.get_db_engine()
         my_config = {}
         # load env
         for env_path in env_paths:

@@ -1,68 +1,24 @@
-import json
-import logging
 import unittest
 
-from confluent_kafka import Producer, Consumer
-from testcontainers.core.container import DockerContainer
+from confluent_kafka import Producer
+from langfarm_tests.base_container import (
+    DockerComposeTestCase,
+    DockerContainerFactory,
+    KafkaContainerFactory,
+)
+from langfarm_tests.base_for_test import get_test_logger, read_file_to_dict
 from testcontainers.kafka import KafkaContainer
 
-from langfarm_tests.base_container import BaseContainerTestCase
-from langfarm_tests.base_for_test import get_test_logger, read_file_to_dict
 from langfarm_tracing.config import KafkaConfig
-
-from langfarm_tracing.kafka import KafkaMessage, headers_to_dict, get_kafka_producer, KafkaSink
+from langfarm_tracing.kafka import KafkaSink, get_kafka_producer
+from kafka_for_test import KafkaSource
 
 logger = get_test_logger(__name__)
 
 
-class KafkaSource:
-    def __init__(self, bootstrap_server: str, topic: str, group_id: str, offset_reset: str = "earliest"):
-        """
-        kafka 消息消费
-        :param topic: 主题
-        :param group_id: 消耗组 id
-        :param offset_reset: 'earliest' or 'latest'。默认 'earliest'
-        """
-        receive_config = {
-            "bootstrap.servers": bootstrap_server,
-            "group.id": group_id,
-            "auto.offset.reset": offset_reset,
-        }
+class KafkaContainerTestCase(DockerComposeTestCase):
+    kafka_container_factory: KafkaContainerFactory
 
-        self.receive_config = receive_config
-        self.topic = topic
-        self.group_id = group_id
-
-        logger.info("receive_config = %s", receive_config)
-
-        consumer = Consumer(receive_config)
-        consumer.subscribe([topic])
-        self.consumer = consumer
-
-    def poll_message(self, timeout) -> KafkaMessage | None:
-        msg = self.consumer.poll(timeout)
-        if msg is None:
-            if logger.isEnabledFor(logging.DEBUG):
-                logger.debug(
-                    "poll message is null within timeout = %s, receive_config = %s", timeout, self.receive_config
-                )
-            return None
-        elif msg.error():
-            logger.error("receive_message_error: %s", msg.error())
-            return None
-        else:
-            key = msg.key().decode("utf-8")
-            message = json.loads(msg.value().decode("utf-8"))
-            header = headers_to_dict(msg.headers())
-
-            return KafkaMessage(key, message, header)
-
-    def close(self):
-        self.consumer.close()
-        logger.info("Consumer close! topic = %s, group_id = %s", self.topic, self.group_id)
-
-
-class KafkaContainerTestCase(BaseContainerTestCase):
     kafka_container: KafkaContainer
     bootstrap_server: str
     producer: Producer
@@ -70,22 +26,25 @@ class KafkaContainerTestCase(BaseContainerTestCase):
     kafka_source: KafkaSource
 
     @classmethod
-    def _init_docker_container(cls) -> DockerContainer:
-        cls.kafka_container = KafkaContainer()
-        return cls.kafka_container
+    def create_docker_factory_list(cls) -> list[DockerContainerFactory]:
+        cls.kafka_container_factory = KafkaContainerFactory()
+        return [cls.kafka_container_factory]
 
     @classmethod
-    def _set_up_class_other(cls):
+    def get_kafka_container(cls):
+        if not cls.kafka_container_factory.kafka_container:
+            logger.error("kafka_container is None")
+            assert False
+        return cls.kafka_container_factory.kafka_container
+
+    @classmethod
+    def after_docker_compose_started(cls):
+        cls.kafka_container = cls.get_kafka_container()
         cls.bootstrap_server = cls.kafka_container.get_bootstrap_server()
         cls.producer = get_kafka_producer(KafkaConfig(KAFKA_BOOTSTRAP_SERVERS=cls.bootstrap_server))
         topic = "test_tracing_topic"
         cls.kafka_sink = KafkaSink(cls.producer, topic)
         cls.kafka_source = KafkaSource(cls.bootstrap_server, topic, "test_tracing_group")
-
-    @classmethod
-    def _tear_down_class_other(cls):
-        if cls.kafka_source:
-            cls.kafka_source.close()
 
     def setUp(self):
         logger.info("")

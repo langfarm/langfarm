@@ -23,7 +23,8 @@ class InitLangfuseDBTestCase(LangfuseDBContainerTestCase):
             "cm3azj5o6000g3rpmxb3iiu8g",
             "cm3b047f2000w3rpmdnv0bxpb",
         ]
-        with self.db_engine.begin() as conn:
+
+        with self.get_db_engine().begin() as conn:
             for k, v in table_id_map.items():
                 result = conn.execute(sqlalchemy.text(f"select id from {k}"))
                 row = result.first()
