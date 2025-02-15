@@ -1,7 +1,11 @@
 import sqlalchemy
 
-from sqlalchemy.engine.base import Engine
-from langfarm_tests.base_container import PostgresContainerFactory, DockerComposeTestCase, DockerContainerFactory
+from langfarm_tests.base_container import (
+    DockerComposeTestCase,
+    DockerContainerFactory,
+    PostgresContainerAware,
+    PostgresContainerFactory,
+)
 from langfarm_tests.base_for_test import get_test_logger
 
 logger = get_test_logger(__name__)
@@ -42,17 +46,8 @@ class LangfuseDBContainerFactory(PostgresContainerFactory):
                 logger.info("db exc result:%s", repr(result))
 
 
-class LangfuseDBContainerTestCase(DockerComposeTestCase):
-    langfuse_db_container_factory: LangfuseDBContainerFactory
-
+class LangfuseDBContainerTestCase(DockerComposeTestCase, PostgresContainerAware):
     @classmethod
     def create_docker_factory_list(cls) -> list[DockerContainerFactory]:
-        cls.langfuse_db_container_factory = LangfuseDBContainerFactory()
-        return [cls.langfuse_db_container_factory]
-
-    @classmethod
-    def get_db_engine(cls) -> Engine:
-        if not cls.langfuse_db_container_factory.db_engine:
-            logger.error("db_engine is None")
-            assert False
-        return cls.langfuse_db_container_factory.db_engine
+        cls.postgres_container_factory = LangfuseDBContainerFactory()
+        return [cls.postgres_container_factory]
