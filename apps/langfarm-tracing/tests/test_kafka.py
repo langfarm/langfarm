@@ -1,27 +1,20 @@
 import unittest
 
-from confluent_kafka import Producer
+from container_for_test import TracingKafkaContainerAware
+from kafka_for_test import KafkaSource
 from langfarm_tests.base_container import (
     DockerComposeTestCase,
     DockerContainerFactory,
     KafkaContainerFactory,
 )
 from langfarm_tests.base_for_test import get_test_logger, read_file_to_dict
-from testcontainers.kafka import KafkaContainer
 
-from langfarm_tracing.config import KafkaConfig
-from langfarm_tracing.kafka import KafkaSink, get_kafka_producer
-from kafka_for_test import KafkaSource
+from langfarm_tracing.kafka import KafkaSink
 
 logger = get_test_logger(__name__)
 
 
-class KafkaContainerTestCase(DockerComposeTestCase):
-    kafka_container_factory: KafkaContainerFactory
-
-    kafka_container: KafkaContainer
-    bootstrap_server: str
-    producer: Producer
+class KafkaContainerTestCase(DockerComposeTestCase, TracingKafkaContainerAware):
     kafka_sink: KafkaSink
     kafka_source: KafkaSource
 
@@ -31,17 +24,8 @@ class KafkaContainerTestCase(DockerComposeTestCase):
         return [cls.kafka_container_factory]
 
     @classmethod
-    def get_kafka_container(cls):
-        if not cls.kafka_container_factory.kafka_container:
-            logger.error("kafka_container is None")
-            assert False
-        return cls.kafka_container_factory.kafka_container
-
-    @classmethod
     def after_docker_compose_started(cls):
-        cls.kafka_container = cls.get_kafka_container()
-        cls.bootstrap_server = cls.kafka_container.get_bootstrap_server()
-        cls.producer = get_kafka_producer(KafkaConfig(KAFKA_BOOTSTRAP_SERVERS=cls.bootstrap_server))
+        cls.init_kafka_producer()
         topic = "test_tracing_topic"
         cls.kafka_sink = KafkaSink(cls.producer, topic)
         cls.kafka_source = KafkaSource(cls.bootstrap_server, topic, "test_tracing_group")

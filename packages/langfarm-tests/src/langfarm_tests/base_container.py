@@ -22,8 +22,9 @@ class DockerContainerFactory:
     def after_docker_container_started(self):
         pass
 
+    @classmethod
     @abstractmethod
-    def docker_container_name(self) -> str:
+    def docker_container_name(cls) -> str:
         pass
 
 
@@ -40,7 +41,8 @@ class PostgresContainerFactory(DockerContainerFactory):
         if self.postgres_container:
             self.db_engine = sqlalchemy.create_engine(self.postgres_container.get_connection_url())
 
-    def docker_container_name(self) -> str:
+    @classmethod
+    def docker_container_name(cls) -> str:
         return "postgres"
 
 
@@ -52,7 +54,8 @@ class RedisContainerFactory(DockerContainerFactory):
         self.redis_container = RedisContainer()
         return self.redis_container
 
-    def docker_container_name(self) -> str:
+    @classmethod
+    def docker_container_name(cls) -> str:
         return "redis"
 
 
@@ -64,7 +67,8 @@ class KafkaContainerFactory(DockerContainerFactory):
         self.kafka_container = KafkaContainer()
         return self.kafka_container
 
-    def docker_container_name(self) -> str:
+    @classmethod
+    def docker_container_name(cls) -> str:
         return "kafka"
 
 
@@ -110,3 +114,36 @@ class DockerComposeTestCase(unittest.TestCase):
             logger.info(f"{name} DockerContainer stopping ...")
             docker_container.stop()
             logger.info(f"{name} DockerContainer stopped!")
+
+
+class PostgresContainerAware:
+    postgres_container_factory: PostgresContainerFactory
+
+    @classmethod
+    def get_db_engine(cls) -> Engine:
+        if not cls.postgres_container_factory.db_engine:
+            logger.error("db_engine is None")
+            assert False
+        return cls.postgres_container_factory.db_engine
+
+
+class RedisContainerAware:
+    redis_container_factory: RedisContainerFactory
+
+    @classmethod
+    def get_redis_container(cls) -> RedisContainer:
+        if not cls.redis_container_factory.redis_container:
+            logger.error("redis_container is None")
+            assert False
+        return cls.redis_container_factory.redis_container
+
+
+class KafkaContainerAware:
+    kafka_container_factory: KafkaContainerFactory
+
+    @classmethod
+    def get_kafka_container(cls) -> KafkaContainer:
+        if not cls.kafka_container_factory.kafka_container:
+            logger.error("kafka_container is None")
+            assert False
+        return cls.kafka_container_factory.kafka_container
