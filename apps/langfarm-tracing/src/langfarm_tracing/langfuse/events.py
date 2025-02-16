@@ -10,7 +10,7 @@ from langfarm_io.redis import read_created_at_or_set
 
 from langfarm_tracing.config import KafkaConfig
 from langfarm_tracing.kafka import KafkaSink, get_kafka_producer
-from langfarm_tracing.tools import rewrite_uuid, utc_time_to_ltz
+from langfarm_tracing.tools import rewrite_uuid
 
 logger = logging.getLogger(__name__)
 
@@ -20,13 +20,6 @@ def obj_transform_str(body: dict, key: str):
         _input = body[key]
         if isinstance(_input, (dict, list)):
             body[key] = json.dumps(_input, ensure_ascii=False)
-
-
-def created_at_to_suffix_id(utc_str: str) -> str:
-    ltz = utc_time_to_ltz(utc_str)
-    # return datetime.strftime(ltz, '%Y%m%d%H')
-    # 使用Unix时间戳（秒）
-    return str(int(ltz.timestamp()))
 
 
 def read_events_schema_to_dict(schema_name: str) -> dict:
