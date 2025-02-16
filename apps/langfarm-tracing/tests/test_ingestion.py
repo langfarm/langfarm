@@ -53,7 +53,15 @@ class LangfuseIngestionTestCase(TracingWithKafkaTestContainerTestCase, TestClien
     @classmethod
     def create_handlers(cls):
         cls.init_env()
+        # postgres env
+        pg_docker = cls.postgres_container_factory.postgres_container
+        assert pg_docker is not None
+        os.environ["POSTGRES_PORT"] = str(pg_docker.get_exposed_port(pg_docker.port))
+        # redis env
+        os.environ["REDIS_PORT"] = str(cls.get_redis_container().get_exposed_port(cls.get_redis_container().port))
+        # kafka env
         os.environ["KAFKA_BOOTSTRAP_SERVERS"] = cls.bootstrap_server
+
         cls.init_test_client()
 
         # api env
