@@ -6,6 +6,7 @@ from pydantic import (
 )
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import BaseModel
 
 
 def parse_cors(v: Any) -> list[str] | str:
@@ -16,7 +17,7 @@ def parse_cors(v: Any) -> list[str] | str:
     raise ValueError(v)
 
 
-class Settings(BaseSettings):
+class AppSettings(BaseSettings):
     model_config = SettingsConfigDict(env_ignore_empty=True, extra="ignore")
     API_V1_STR: str = "/api/v1"
     # 60 minutes * 24 hours * 8 days = 8 days
@@ -29,7 +30,19 @@ class Settings(BaseSettings):
     BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = []
 
 
-settings: Settings
+settings: AppSettings
 """
 使用的时候创建
 """
+
+
+class PostgresConfig(BaseModel):
+    POSTGRES_SERVER: str = "localhost"
+    POSTGRES_PORT: int = 5432
+    POSTGRES_DB: str = "postgres"
+    POSTGRES_USER: str = "postgres"
+    POSTGRES_PASSWORD: str = "postgres"
+
+
+class LangfuseConfig(BaseModel):
+    SALT: str

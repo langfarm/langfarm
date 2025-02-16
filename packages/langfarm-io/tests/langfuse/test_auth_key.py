@@ -1,10 +1,10 @@
 import unittest
 
 from langfarm_io.langfuse import auth
-from env_config import LangfuseEnv
+from langfarm_tests.env_config import LangfuseEnv
 
 
-class MyTestCase(unittest.TestCase):
+class AuthKeyTestCase(unittest.TestCase):
     def test_decode_from_basic_auth(self):
         my_pk = "this_is_pk"
         my_sk = "this_is_sk"

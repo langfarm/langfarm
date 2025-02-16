@@ -1,3 +1,4 @@
+import json
 import logging.config
 import os.path
 
@@ -38,7 +39,7 @@ config_log_for_test()
 
 
 def get_test_logger(name: str):
-    return logging.getLogger(name)
+    return logging.getLogger(f"tests.{name}")
 
 
 def get_package_base_dir(test_file: str) -> str:
@@ -57,3 +58,27 @@ def find_env_file(test_file: str, suffix: str = ".test") -> list[str]:
     package_base_dir = get_package_base_dir(test_file)
     env_file_list = [f"{root_dir}/tests/.env{suffix}", f"{package_base_dir}/tests/.env{suffix}"]
     return env_file_list
+
+
+def read_file_to_dict(test_file: str, path_to_file: str) -> dict:
+    """
+    从 path_to_file 读取 json
+    :param test_file: __file__
+    :param path_to_file: 相对于 <package_base_dir>/tests/ 的文件
+    :return: 返回 dict
+    """
+    package_base_dir = get_package_base_dir(test_file)
+    with open(f"{package_base_dir}/tests/{path_to_file}") as f:
+        return json.load(f)
+
+
+def read_file_to_str(test_file: str, path_to_file: str) -> str:
+    """
+    从 path_to_file 读取 json
+    :param test_file: __file__
+    :param path_to_file: 相对于 <package_base_dir>/tests/ 的文件
+    :return: 返回 str
+    """
+    package_base_dir = get_package_base_dir(test_file)
+    with open(f"{package_base_dir}/tests/{path_to_file}") as f:
+        return f.read()

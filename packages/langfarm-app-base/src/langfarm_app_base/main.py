@@ -1,4 +1,4 @@
-from .config import Settings
+from .config import AppSettings
 from fastapi import FastAPI
 from fastapi.routing import APIRoute, APIRouter
 from starlette.middleware.cors import CORSMiddleware
@@ -8,7 +8,7 @@ def custom_generate_unique_id(route: APIRoute) -> str:
     return f"{route.tags[0]}-{route.name}"
 
 
-def create_app(settings: Settings, api_router: APIRouter) -> FastAPI:
+def create_app(settings: AppSettings, api_router: APIRouter) -> FastAPI:
     app = FastAPI(
         title=settings.PROJECT_NAME,
         openapi_url=f"{settings.API_V1_STR}/openapi.json",

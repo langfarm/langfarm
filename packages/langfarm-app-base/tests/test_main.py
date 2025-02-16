@@ -8,7 +8,7 @@ from langfarm_tests.base_for_test import get_test_logger, find_env_file
 logger = get_test_logger(__name__)
 
 
-settings = config.settings = config.Settings(
+settings = config.settings = config.AppSettings(
     _env_file=find_env_file(__file__)  # type: ignore
 )
 
