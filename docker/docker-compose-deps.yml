@@ -1,0 +1,60 @@
+services:
+  langfuse:
+    # init postgres db
+    image: langfuse/langfuse:2
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    env_file:
+      - path: .env.docker # default
+        required: true
+      - path: .env.docker.langfuse # optional override
+        required: false
+
+  postgres:
+    image: postgres:17
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    env_file:
+      - path: .env.docker # default
+        required: true
+    ports:
+      - "5432:5432"
+    volumes:
+      # 初始化 langfarm-tracing 使用的 langfuse 相关表数据。仅用于本地测试。
+      # docker exec -it langfarm-postgres-1 psql -U postgres -w postgres -f /init_data.sql
+      - ../packages/langfarm-tests/src/langfarm_tests/init_db/init_data.sql:/init_data.sql
+      - /tmp/langfarm/pg_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    restart: always
+    ports:
+      - "6379:6379"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.2.1
+    hostname: kafka
+    ports:
+      - "9092:9092"
+      - "9997:9997"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:9092'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9997
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka0 -Dcom.sun.management.jmxremote.rmi.port=9997
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.2.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
