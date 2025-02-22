@@ -16,12 +16,12 @@ TODO
 
 ## 贡献
 
-请看 [贡献文档](CONTRIBUTING.md)。
+请看 [贡献文档](docs/CONTRIBUTING.md)。
 
 ## 支持与帮助
 
-请看 [支持文档](SUPPORT.md)。
+请看 [支持文档](docs/SUPPORT.md)。
 
 ## 许可
 
-在 [Apache License, Version 2.0](https://opensource.org/license/apache-2-0) 框架下，增加用于直接服务多租户的产品要单独授权，其它情况无限制免费使用。详情请看 [LICENSE](LICENSE)。
+[MIT LICENSE](LICENSE)。
