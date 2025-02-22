@@ -6,6 +6,7 @@ import { zh_theme_config, en_theme_config } from './theme-config.mts'
 export default defineConfig({
   title: "Langfarm",
   description: "Langfarm 是 LLM 的应用 DevOps 平台",
+  base: '/langfarm/',
   sitemap: {
     hostname: 'https://langfarm.github.io'
   },
