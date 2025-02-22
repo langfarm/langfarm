@@ -1,0 +1,38 @@
+services:
+  jobmanager:
+    image: langfarm/paimon-flink:0.1.2
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    networks:
+      - langfarm_default
+    volumes:
+      - ./streaming/catalog-store/langfarm-local.yaml:/data/catalog-store/langfarm.yaml
+      - /tmp/langfarm/flink:/data
+      - /tmp/langfarm/paimon:/data/paimon
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager        
+
+  taskmanager:
+    image: langfarm/paimon-flink:0.1.2
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    networks:
+      - langfarm_default
+    volumes:
+      - ./streaming/catalog-store/langfarm-local.yaml:/data/catalog-store/langfarm.yaml
+      - /tmp/langfarm/flink:/data
+      - /tmp/langfarm/paimon:/data/paimon
+    scale: 1
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 10
+
+networks:
+  langfarm_default:
+    external: true

@@ -1,0 +1,20 @@
+services:
+  sql-client:
+    image: langfarm/paimon-flink:0.1.2
+    networks:
+      - langfarm_default
+    command: bin/sql-client.sh
+    volumes:
+      - ./streaming/catalog-store/langfarm-local.yaml:/data/catalog-store/langfarm.yaml
+      - /tmp/langfarm/flink:/data
+      - /tmp/langfarm/paimon:/data/paimon
+      - ./streaming:/opt/flink/scripts
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        rest.address: jobmanager
+
+networks:
+  langfarm_default:
+    external: true

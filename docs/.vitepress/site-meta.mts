@@ -9,6 +9,16 @@ const sidebar = [
         link: '/intro',
     },
     {
+        text: '快速开始',
+        link: '/quick-start',
+    },
+    {
+        text: '数据入湖',
+        items: [
+            { text: '快速开始', link: '/streaming/quick-start' },
+        ]
+    },
+    {
         text: '贡献',
         items: [
             { text: '贡献指南', link: '/CONTRIBUTING' },
@@ -27,6 +37,16 @@ const en_sidebar = [
     {
         text: 'Introduction',
         link: '/en/intro',
+    },
+    {
+        text: 'Quick Start',
+        link: '/en/quick-start',
+    },
+    {
+        text: 'Lakehouse',
+        items: [
+            { text: 'Quick Start', link: '/en/streaming/quick-start' },
+        ]
     },
     {
         text: 'Contribute',
