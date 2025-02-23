@@ -8,10 +8,10 @@ hero:
   actions:
     - theme: brand
       text: Tracing
-      link: /markdown-examples
+      link: /en/quick-start
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Write To Paimon
+      link: /en/streaming/quick-start
 
 features:
   - title: Enhance Langfuse Data Processing Capacity
