@@ -7,12 +7,15 @@ Langfarm 是 LLM 应用的 DevOps 平台。使用 Langfuse 及对其改进等...
 * Tracing：
   * tracing 数据（traces 和 observations）转发到 kafka。
   * tracing 数据存储在 Paimon 数据湖。
-* Prompt 效果评估
+* TODO: 
+  * langfuse 界面可以取到 paimon 中的数据。
+  * Prompt 效果评估
 
 
-## 示例
+## 快速开始
 
-TODO
+* [Langfarm 快速开始](https://langfarm.github.io/langfarm/quick-start.html)
+* [数据写入 Paimon 数据湖](https://langfarm.github.io/langfarm/streaming/quick-start.html)
 
 ## 贡献
 
@@ -24,4 +27,4 @@ TODO
 
 ## 许可
 
-[MIT LICENSE](LICENSE)。
+MIT LICENSE
